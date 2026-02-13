@@ -1,10 +1,8 @@
 package giadatonni.PROGETTO_SETTIMANALE_S18.controllers;
 
 
-import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Dipendente;
 import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Prenotazione;
 import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.ValidationException;
-import giadatonni.PROGETTO_SETTIMANALE_S18.payload.DipendenteDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.payload.PrenotazioneDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.payload.PutPrenotazioneDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.services.PrenotazioniService;
@@ -14,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,7 +60,7 @@ public class PrenotazioniController {
     public List<Prenotazione> findPrenotazioniByDipendente(@PathVariable UUID dipendenteId){
         return this.prenotazioniService.trovaByUtente(dipendenteId);
     }
-    
+
     /*@DeleteMapping("/{PrenotazioneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Prenotazione deletePrenotazione(@PathVariable UUID PrenotazioneId){}*/
