@@ -22,7 +22,7 @@ public class PrenotazioniController {
         this.prenotazioniService = prenotazioniService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public Page<Prenotazione> getPrenotazioni(){}
 
     @PostMapping
@@ -34,5 +34,5 @@ public class PrenotazioniController {
 
     @DeleteMapping("/{PrenotazioneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Prenotazione deletePrenotazione(@PathVariable UUID PrenotazioneId){}
+    public Prenotazione deletePrenotazione(@PathVariable UUID PrenotazioneId){}*/
 }

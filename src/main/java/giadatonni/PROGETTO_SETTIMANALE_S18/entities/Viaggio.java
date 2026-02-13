@@ -26,6 +26,8 @@ public class Viaggio {
     @Column(nullable = false)
     private String stato;
 
+    public Viaggio() {}
+
     public Viaggio(String destinazione, LocalDate dataPartenza, LocalDate dataRitorno, String stato) {
         this.destinazione = destinazione;
         this.dataPartenza = dataPartenza;

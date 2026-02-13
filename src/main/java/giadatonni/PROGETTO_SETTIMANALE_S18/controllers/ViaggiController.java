@@ -19,7 +19,7 @@ public class ViaggiController {
         this.viaggiService = viaggiService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public Page<Viaggio> getViaggi(){}
 
     @PostMapping
@@ -31,5 +31,5 @@ public class ViaggiController {
 
     @DeleteMapping("/{viaggioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Viaggio deleteViaggio(@PathVariable UUID viaggioId){}
+    public Viaggio deleteViaggio(@PathVariable UUID viaggioId){}*/
 }

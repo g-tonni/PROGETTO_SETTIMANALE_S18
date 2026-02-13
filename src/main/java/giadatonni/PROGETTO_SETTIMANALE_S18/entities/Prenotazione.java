@@ -29,6 +29,8 @@ public class Prenotazione {
     @JoinColumn(name = "dipendente_id", nullable = false)
     private Dipendente dipendente;
 
+    public Prenotazione() {}
+
     public Prenotazione(LocalDate dataPrenotazione, String richiesteSpeciali, Viaggio viaggio, Dipendente dipendente) {
         this.dataPrenotazione = dataPrenotazione;
         this.richiesteSpeciali = richiesteSpeciali;

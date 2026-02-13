@@ -29,6 +29,8 @@ public class Dipendente {
     @Column(name = "foto_profilo", nullable = false)
     private String fotoProfilo;
 
+    public Dipendente() {}
+
     public Dipendente(String username, String nome, String cognome, String email, String fotoProfilo) {
         this.username = username;
         this.nome = nome;
