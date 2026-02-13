@@ -1,9 +1,10 @@
 package giadatonni.PROGETTO_SETTIMANALE_S18.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Dipendente;
 import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.BadRequestException;
 import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.NotFoundException;
-import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.ValidationException;
 import giadatonni.PROGETTO_SETTIMANALE_S18.payload.DipendenteDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.repositories.DipendentiRepository;
 import org.springframework.data.domain.Page;
@@ -11,15 +12,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class DipendentiService {
     private final DipendentiRepository dipendentiRepository;
+    private final Cloudinary cloudinaryUploader;
 
-    public DipendentiService(DipendentiRepository dipendentiRepository) {
+    public DipendentiService(DipendentiRepository dipendentiRepository, Cloudinary cloudinaryUploader) {
         this.dipendentiRepository = dipendentiRepository;
+        this.cloudinaryUploader = cloudinaryUploader;
     }
 
     public Page<Dipendente> getDipendenti(int page, int size, String orderBy){
@@ -61,4 +67,19 @@ public class DipendentiService {
         System.out.println("Dipendente aggiornato");
         return found;
     }
+
+   public Dipendente uploadFotoProfilo(UUID dipendenteId, MultipartFile file) {
+        Dipendente found = this.findById(dipendenteId);
+        try {
+            Map result = cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) result.get("secure_url");
+            found.setFotoProfilo(imageUrl);
+            this.dipendentiRepository.save(found);
+            System.out.println("Foto profilo aggiornata");
+            return found;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +53,12 @@ public class DipendentiController {
         } else {
             return this.dipendentiService.putDipendente(dipendenteId, body);
         }
+    }
+
+    @PatchMapping("/{dipendenteId}/fotoProfilo")
+    public Dipendente uploadImage(@RequestParam("foto_profilo") MultipartFile file, @PathVariable UUID dipendenteId) {
+        // System.out.println(file.getOriginalFilename());
+        return this.dipendentiService.uploadFotoProfilo(dipendenteId, file);
     }
 
     /*@DeleteMapping("/{dipendenteId}")
