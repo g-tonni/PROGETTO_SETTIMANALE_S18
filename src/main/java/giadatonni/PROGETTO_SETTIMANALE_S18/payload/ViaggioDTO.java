@@ -11,10 +11,10 @@ public record ViaggioDTO (
     @NotBlank(message = "La destinazione deve essere inserita")
     @Size(min = 3, max = 30, message = "La destinazione deve essere compresa tra 3 e 30 caratteri")
     String destinazione,
-    @NotNull
-    @Future
+    @NotNull(message = "La data di partenza deve essere inserita")
+    @Future(message = "La data di partenza deve essere una data futura")
     LocalDate dataPartenza,
-    @NotNull
-    @Future
+    @NotNull(message = "La data di ritorno deve essere inserita")
+    @Future(message = "La data di ritorno deve essere una data futura")
     LocalDate dataRitorno){
 }
