@@ -18,7 +18,7 @@ public class Prenotazione {
     @Column(name = "data_prenotazione", nullable = false)
     private LocalDate dataPrenotazione;
 
-    @Column(name = "richieste_speciali", nullable = false, length = 500)
+    @Column(name = "richieste_speciali", length = 500)
     private String richiesteSpeciali;
 
     @ManyToOne
