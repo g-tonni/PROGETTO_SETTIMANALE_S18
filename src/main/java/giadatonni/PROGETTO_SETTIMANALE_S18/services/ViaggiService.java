@@ -1,10 +1,9 @@
 package giadatonni.PROGETTO_SETTIMANALE_S18.services;
 
-import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Dipendente;
+import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Prenotazione;
 import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Viaggio;
 import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.BadRequestException;
 import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.NotFoundException;
-import giadatonni.PROGETTO_SETTIMANALE_S18.payload.DipendenteDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.payload.ViaggioDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.repositories.ViaggiRepository;
 import org.springframework.data.domain.Page;
@@ -58,6 +57,15 @@ public class ViaggiService {
         found.setDataRitorno(body.dataRitorno());
         this.viaggiRepository.save(found);
         System.out.println("Viaggio aggiornato");
+        return found;
+    }
+
+    public Viaggio patchStatoViaggio(UUID viaggioId, String stato){
+        Viaggio found = this.findById(viaggioId);
+        if (stato.equals("concluso") && found.getDataRitorno().isAfter(LocalDate.now())) throw new BadRequestException("Lo stato del viaggio non può essere 'concluso' se la data di ritorno è successiva alla data di oggi");
+        if(!stato.equals("concluso") && !stato.equals("annullato")) throw new BadRequestException("Lo stato può essere: in_programma, annullato o concluso");
+        found.setStato(stato);
+        this.viaggiRepository.save(found);
         return found;
     }
 }

@@ -40,7 +40,7 @@ public class ViaggiController {
     }
 
     @GetMapping("/{viaggioId}")
-    public Viaggio getViaggi(@PathVariable UUID viaggioId){
+    public Viaggio getViaggioById(@PathVariable UUID viaggioId){
         return this.viaggiService.findById(viaggioId);
     }
 
@@ -52,6 +52,11 @@ public class ViaggiController {
         } else {
             return this.viaggiService.putViaggio(viaggioId, body);
         }
+    }
+
+    @PatchMapping("/{viaggioId}/stato")
+    public Viaggio cambiaStato(@PathVariable UUID viaggioId, @RequestBody String stato){
+        return this.viaggiService.patchStatoViaggio(viaggioId, stato);
     }
 
     /* @DeleteMapping("/{viaggioId}")

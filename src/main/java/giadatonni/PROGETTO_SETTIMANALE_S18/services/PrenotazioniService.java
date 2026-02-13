@@ -1,14 +1,63 @@
 package giadatonni.PROGETTO_SETTIMANALE_S18.services;
 
+import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Dipendente;
+import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Prenotazione;
+import giadatonni.PROGETTO_SETTIMANALE_S18.entities.Viaggio;
+import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.BadRequestException;
+import giadatonni.PROGETTO_SETTIMANALE_S18.exceptions.NotFoundException;
+import giadatonni.PROGETTO_SETTIMANALE_S18.payload.PrenotazioneDTO;
+import giadatonni.PROGETTO_SETTIMANALE_S18.payload.PutPrenotazioneDTO;
+import giadatonni.PROGETTO_SETTIMANALE_S18.payload.ViaggioDTO;
 import giadatonni.PROGETTO_SETTIMANALE_S18.repositories.PrenotazioniRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class PrenotazioniService {
 
     private final PrenotazioniRepository prenotazioniRepository;
+    private final DipendentiService dipendentiService;
+    private final ViaggiService viaggiService;
 
-    public PrenotazioniService(PrenotazioniRepository prenotazioniRepository) {
+    public PrenotazioniService(PrenotazioniRepository prenotazioniRepository, DipendentiService dipendentiService, ViaggiService viaggiService) {
         this.prenotazioniRepository = prenotazioniRepository;
+        this.dipendentiService = dipendentiService;
+        this.viaggiService = viaggiService;
+    }
+
+    public Page<Prenotazione> getPrenotazioni(int page, int size, String orderBy){
+        if(page < 0) page = 0;
+        if(page > 30) page = 30;
+        if(size < 0) size = 0;
+        if(size > 20) size = 20;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
+        return this.prenotazioniRepository.findAll(pageable);
+    }
+
+    public Prenotazione findById(UUID prenotazioneId){
+        return this.prenotazioniRepository.findById(prenotazioneId).orElseThrow(() -> new NotFoundException(prenotazioneId));
+    }
+
+    public Prenotazione postPrenotazione(PrenotazioneDTO body){
+        Dipendente dipendenteFound = this.dipendentiService.findById(body.dipendente());
+        Viaggio viaggioFound = this.viaggiService.findById(body.viaggio());
+        Prenotazione nuovaPrenotazione = new Prenotazione(LocalDate.now(), body.richiesteSpeciali(), viaggioFound, dipendenteFound);
+        this.prenotazioniRepository.save(nuovaPrenotazione);
+        System.out.println("Prenotazione salvata");
+        return nuovaPrenotazione;
+    }
+
+    public Prenotazione putPrenotazione(UUID prenotazioneId, PutPrenotazioneDTO body){
+        Prenotazione found = this.findById(prenotazioneId);
+        found.setRichiesteSpeciali(body.richiesteSpeciali());
+        this.prenotazioniRepository.save(found);
+        System.out.println("Prenotazione aggiornata");
+        return found;
     }
 }

@@ -40,7 +40,7 @@ public class DipendentiController {
     }
 
     @GetMapping("/{dipendenteId}")
-    public Dipendente getDipendenti(@PathVariable UUID dipendenteId){
+    public Dipendente getDipendenteById(@PathVariable UUID dipendenteId){
         return this.dipendentiService.findById(dipendenteId);
     }
 
